@@ -38,8 +38,8 @@ LARGE_CONSTANT2 = 5201314
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", default='cache/demo.json', type=str, help="Dialogue instruction data path")
-parser.add_argument("--sd_path", default='/data2/chengjunhao/THEATERGEN/pretrained_models/diffusion_1.5_comic', type=str, help="Path to Stable Diffusion Folder")
-parser.add_argument("--vae_path", default='/data2/chengjunhao/THEATERGEN/pretrained_models/vae_ft_mse', type=str, help="Path to VAE Folder")
+parser.add_argument("--sd_path", default='dreamlike-art/dreamlike-anime-1.0', type=str, help="Path to Stable Diffusion Folder")
+parser.add_argument("--vae_path", default='stabilityai/sd-vae-ft-mse', type=str, help="Path to VAE Folder")
 parser.add_argument("--repeats", default=2, type=int, help="Number of samples for each prompt")
 parser.add_argument("--seed_offset", default=1, type=int, help="Offset to the seed (seed starts from this number)")
 parser.add_argument("--sd_version", default='1.5plus', type=str, help="Base model version. Pick from [1.5, 1.5plus, xl, xlplus]") # 1.5, 1.5plus is recommended
@@ -60,8 +60,8 @@ is_CMIGBENCH = args.is_CMIGBENCH
 print('Welcome to the AutoStudio')
 
 if args.sd_version == '1.5':
-    ip_ckpt = "/IP-Adapter/models/ip-adapter_sd15.bin"
-    image_encoder_path = "/IP-Adapter/models/image_encoder/"
+    ip_ckpt = "/content/AutoStudio/IP-Adapter/models/ip-adapter_sd15.bin"
+    image_encoder_path = "/content/AutoStudio/IP-Adapter/models/image_encoder/"
 
     noise_scheduler = DDIMScheduler(
         num_train_timesteps=1000,
@@ -77,7 +77,7 @@ if args.sd_version == '1.5':
     '''
     recommend comic style checkpoints:
     '''
-    unet = UNet2DConditionModel.from_pretrained('diffusion_1.5/unet').to(dtype=torch.float16) 
+    unet = UNet2DConditionModel.from_pretrained('dreamlike-art/dreamlike-anime-1.0', subfolder='unet').to(dtype=torch.float16) 
     
     sd_pipe = StableDiffusionPipeline.from_pretrained(
         args.sd_path,
@@ -93,8 +93,8 @@ if args.sd_version == '1.5':
     print('Succesfully load models')
 
 elif args.sd_version == '1.5plus':
-    ip_ckpt = "/IP-Adapter/models/ip-adapter-plus_sd15.bin"
-    image_encoder_path = "/IP-Adapter/models/image_encoder/"
+    ip_ckpt = "/content/AutoStudio/IP-Adapter/models/ip-adapter-plus_sd15.bin"
+    image_encoder_path = "/content/AutoStudio/IP-Adapter/models/image_encoder/"
 
     noise_scheduler = DDIMScheduler(
         num_train_timesteps=1000,
@@ -107,7 +107,7 @@ elif args.sd_version == '1.5plus':
     )   
     
     vae = AutoencoderKL.from_pretrained(args.vae_path).to(dtype=torch.float16)
-    unet = UNet2DConditionModel.from_pretrained('/diffusion_1.5/unet').to(dtype=torch.float16)
+    unet = UNet2DConditionModel.from_pretrained('dreamlike-art/dreamlike-anime-1.0', subfolder='unet').to(dtype=torch.float16)
     sd_pipe = StableDiffusionPipeline.from_pretrained(
         args.sd_path,
         torch_dtype=torch.float16,

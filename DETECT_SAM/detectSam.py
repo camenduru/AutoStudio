@@ -92,7 +92,7 @@ def process_image(
 ):
     
     categories = process_categories(categories)
-    input_image, _ = load_image(input_image)#, type='image')
+    input_image, _ = load_image(input_image, type='image')
 
     if device != DEVICE:
         detect_model.model = detect_model.model.to(device)
