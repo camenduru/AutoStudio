@@ -38,7 +38,7 @@ LARGE_CONSTANT2 = 5201314
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", default='cache/demo.json', type=str, help="Dialogue instruction data path")
-parser.add_argument("--sd_path", default='dreamlike-art/dreamlike-anime-1.0', type=str, help="Path to Stable Diffusion Folder")
+parser.add_argument("--sd_path", default='digiplay/DarkSushi2.5D_v1', type=str, help="Path to Stable Diffusion Folder")
 parser.add_argument("--vae_path", default='stabilityai/sd-vae-ft-mse', type=str, help="Path to VAE Folder")
 parser.add_argument("--repeats", default=2, type=int, help="Number of samples for each prompt")
 parser.add_argument("--seed_offset", default=1, type=int, help="Offset to the seed (seed starts from this number)")
@@ -77,7 +77,7 @@ if args.sd_version == '1.5':
     '''
     recommend comic style checkpoints:
     '''
-    unet = UNet2DConditionModel.from_pretrained('dreamlike-art/dreamlike-anime-1.0', subfolder='unet').to(dtype=torch.float16) 
+    unet = UNet2DConditionModel.from_pretrained('digiplay/DarkSushi2.5D_v1', subfolder='unet').to(dtype=torch.float16) 
     
     sd_pipe = StableDiffusionPipeline.from_pretrained(
         args.sd_path,
@@ -107,7 +107,7 @@ elif args.sd_version == '1.5plus':
     )   
     
     vae = AutoencoderKL.from_pretrained(args.vae_path).to(dtype=torch.float16)
-    unet = UNet2DConditionModel.from_pretrained('dreamlike-art/dreamlike-anime-1.0', subfolder='unet').to(dtype=torch.float16)
+    unet = UNet2DConditionModel.from_pretrained('digiplay/DarkSushi2.5D_v1', subfolder='unet').to(dtype=torch.float16)
     sd_pipe = StableDiffusionPipeline.from_pretrained(
         args.sd_path,
         torch_dtype=torch.float16,
@@ -138,14 +138,15 @@ elif args.sd_version == 'xl':
     autostudio = AUTOSTUDIOXL(sd_pipe, image_encoder_path, ip_ckpt, device)
 
 elif args.sd_version == 'xlplus':
-    base_model_path = "pretrained_models/diffusion_xl"
-    image_encoder_path = "/IP-Adapter/models/image_encoder"
-    ip_ckpt = "/IP-Adapter/sdxl_models/ip-adapter-plus_sdxl_vit-h.bin"
-    unet = UNet2DConditionModel.from_pretrained('pretrained_models/diffusion_xl/unet').to(dtype=torch.float16)
+    base_model_path = "ckpt/holodayo-xl-2.1"
+    image_encoder_path = "/content/AutoStudio/IP-Adapter/sdxl_models/image_encoder"
+    ip_ckpt = "/content/AutoStudio/IP-Adapter/sdxl_models/ip-adapter-plus_sdxl_vit-h.bin"
+    unet = UNet2DConditionModel.from_pretrained('ckpt/holodayo-xl-2.1', subfolder='unet', variant="fp16").to(dtype=torch.float16)
     vae = AutoencoderKL.from_pretrained('stabilityai/sdxl-vae').to(dtype=torch.float16)
 
     sd_pipe = StableDiffusionXLPipeline.from_pretrained(
         base_model_path,
+        variant="fp16",
         unet = unet,
         vae = vae,
         torch_dtype=torch.float16,
