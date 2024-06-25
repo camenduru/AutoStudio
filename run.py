@@ -106,7 +106,7 @@ elif args.sd_version == '1.5plus':
         steps_offset=1,
     )   
     
-    vae = AutoencoderKL.from_pretrained(args.vae_path).to(dtype=torch.float16)
+    vae = AutoencoderKL.from_pretrained(args.vae_path, variant="fp16").to(dtype=torch.float16)
     unet = UNet2DConditionModel.from_pretrained('digiplay/DarkSushi2.5D_v1', subfolder='unet', variant="fp16").to(dtype=torch.float16)
     sd_pipe = StableDiffusionPipeline.from_pretrained(
         args.sd_path,
