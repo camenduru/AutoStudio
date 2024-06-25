@@ -39,7 +39,7 @@ LARGE_CONSTANT2 = 5201314
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", default='cache/demo.json', type=str, help="Dialogue instruction data path")
 parser.add_argument("--sd_path", default='digiplay/DarkSushi2.5D_v1', type=str, help="Path to Stable Diffusion Folder")
-parser.add_argument("--vae_path", default='stabilityai/sd-vae-ft-mse', type=str, help="Path to VAE Folder")
+parser.add_argument("--vae_path", default='digiplay/DarkSushi2.5D_v1', type=str, help="Path to VAE Folder")
 parser.add_argument("--repeats", default=2, type=int, help="Number of samples for each prompt")
 parser.add_argument("--seed_offset", default=1, type=int, help="Offset to the seed (seed starts from this number)")
 parser.add_argument("--sd_version", default='1.5plus', type=str, help="Base model version. Pick from [1.5, 1.5plus, xl, xlplus]") # 1.5, 1.5plus is recommended
